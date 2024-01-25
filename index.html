@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Image Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-top: 10px;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #generatedImage {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        function generateImage() {
+            var text = document.getElementById('textInput').value;
+            var textColor = document.getElementById('textColor').value;
+            var bgColor = document.getElementById('bgColor').value;
+
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+
+            // Set canvas size
+            canvas.width = 400;
+            canvas.height = 200;
+
+            // Set background color
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Set text color and font
+            ctx.fillStyle = textColor;
+            ctx.font = '30px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // Draw text
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+            // Display generated image
+            var generatedImage = document.getElementById('generatedImage');
+            generatedImage.src = canvas.toDataURL('image/png');
+        }
+
+        function downloadImage() {
+            var generatedImage = document.getElementById('generatedImage');
+            var link = document.createElement('a');
+            link.href = generatedImage.src;
+            link.download = 'generated_image.png';
+            link.click();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Advanced Image Generator</h1>
+        
+        <form>
+            <label for="textInput">Text:</label>
+            <input type="text" id="textInput" placeholder="Enter text" required>
+
+            <label for="textColor">Text Color:</label>
+            <input type="color" id="textColor" value="#000000">
+
+            <label for="bgColor">Background Color:</label>
+            <input type="color" id="bgColor" value="#ffffff">
+
+            <button type="button" onclick="generateImage()">Generate Image</button>
+            <button type="button" onclick="downloadImage()">Download Image</button>
+        </form>
+
+        <img id="generatedImage" alt="Generated Image">
+    </div>
+</body>
+</html>
