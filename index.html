@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enhanced Image Generator</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -106,12 +105,52 @@
     </style>
     <script>
         function generateImage() {
-            var container = document.getElementById('container');
+            var text = document.getElementById('textInput').value;
+            var textColor = document.getElementById('textColor').value;
+            var bgColor = document.getElementById('bgColor').value;
 
-            html2canvas(container).then(canvas => {
-                var generatedImage = document.getElementById('generatedImage');
-                generatedImage.src = canvas.toDataURL('image/png');
-            });
+            // Create an image element
+            var img = new Image();
+
+            // Set font and text styles
+            img.style.fontFamily = 'Roboto, sans-serif';
+            img.style.fontSize = '30px';
+            img.style.color = textColor;
+            img.style.backgroundColor = bgColor;
+            img.style.padding = '10px';
+            img.style.borderRadius = '5px';
+
+            // Set text content
+            img.textContent = text;
+
+            // Append the image element to the container
+            var container = document.getElementById('container');
+            container.appendChild(img);
+
+            // Create a data URL from the image element
+            var dataURL = getImageDataURL(img);
+
+            // Display generated image
+            var generatedImage = document.getElementById('generatedImage');
+            generatedImage.src = dataURL;
+
+            // Remove the temporary image element
+            container.removeChild(img);
+        }
+
+        function getImageDataURL(img) {
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+
+            // Set canvas size
+            canvas.width = img.clientWidth;
+            canvas.height = img.clientHeight;
+
+            // Draw the image onto the canvas
+            ctx.drawImage(img, 0, 0);
+
+            // Return the data URL
+            return canvas.toDataURL('image/png');
         }
 
         function downloadImage() {
